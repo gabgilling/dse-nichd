@@ -39,6 +39,10 @@ for cat_col in ['Education', 'GravCat', 'SmokeCat1', 'SmokeCat2', 'Ins_Govt', 'I
     df_demographics[cat_col] = df_demographics[cat_col].fillna(mode)
 
 # impute and standardize numeric features
-df_demographics[['Age_at_V1', 'BMI']] = df_demographics[['Age_at_V1', 'BMI']].apply(lambda x: (x - np.mean(x)) / np.std(x))
+df_demographics[['GAwks_screen','Age_at_V1', 'BMI']] = df_demographics[['GAwks_screen','Age_at_V1', 'BMI']].apply(lambda x: (x - np.mean(x)) / np.std(x))
+
+df_demographics[[code for code in df_demographics.columns if code not in ['GAwks_screen','Age_at_V1', 'BMI']]] = df_demographics[[code for code in df_demographics.columns if code not in ['GAwks_screen','Age_at_V1', 'BMI']]].astype(str)
+
+df_demographics = pd.concat([df_demographics, df.PublicID], axis = 1)
 
 df_demographics.to_pickle('df_demographics.pkl')
