@@ -1,20 +1,9 @@
 # import packages
-import matplotlib.pyplot as plt
 import numpy as np
 import warnings
 warnings.filterwarnings("ignore")
-import re
 import pickle
 import pandas as pd
-import json
-import os
-
-# import metadata dictionaries
-with open('var_dict.txt') as json_file:
-    var_dict = json.load(json_file)
-
-with open('code_dict.txt') as json_file:
-    code_dict = json.load(json_file)
 
 # import data
 path_to_data = "/Users/gabrielgilling/Downloads/"
@@ -38,6 +27,7 @@ demographic_cols = [
     'V1AG01',
     'V1AG11',]
 
+# create subsetted df
 df_demographics = df[demographic_cols].copy()
 
 df_demographics['Age_at_V1'] = df_demographics['Age_at_V1'].fillna(df_demographics['Age_at_V1'].mean())
