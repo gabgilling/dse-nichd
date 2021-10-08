@@ -6,9 +6,12 @@ Team:
 - Demian Gass - IBM
 - (Andre Violante) - IBM
 
-# Mission Statement
+# Abstract
 
-For this challenge, we decided to assess the impact of changes in features that were measured across the visits on different pregnancy outcomes. To that extent, we divided the challenge's dataset into several components. 
+For this challenge, we decided to assess the impact of changes in features that were measured across the visits on different pregnancy outcomes. To that extent, we divided the challenge's dataset into several components: a base dataset with demographic information, a delta dataset capturing changes in features between visits and finally a target dataset with target variables.
+
+For each target variable we've identified, we run 3 classification models: a Lasso regression, a random forest and a catboost. For each model, we tabulate the most important features and for the Lasso model, we additionally tabulate the feature p-values in order to ascertain the uncertainty around their estimated effects.
+
 
 # Methodology
 
