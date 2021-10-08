@@ -55,4 +55,6 @@ df_targets['Termination'] = [1 if (val == 4.0 or val == 5.0 and not np.isnan(val
 df_targets = df_targets.drop(['pOUTCOME'], axis = 1)
 df_targets = df_targets.apply(lambda x :pd.to_numeric(x, errors = 'coerce'))
 
+df_targets = pd.concat([df_targets, df.PublicID], axis = 1)
+
 df_targets.to_pickle('targets_df.pkl')
