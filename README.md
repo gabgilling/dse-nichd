@@ -21,6 +21,8 @@ We find that [Ainesh to fill]
 
 # Methodology
 
+## Preparing the Data for Modeling
+
 ## 1. Base Dataset
 First, we created our __base__ dataset in the [create_base_df.py](https://github.com/gabgilling/dse-nichd/blob/main/create_base_df.py) script which sought to capture pregnant women characteristics _before_ their pregnancies. When running [predictive] models, it is important to adjust/control for important covariates that are likely to account for the variation observed in the target variable. The base dataset was created by using the variables included in the _demographics_ ancillary file. We dropped redundant variables (i.e. we dropped `BMI_cat` since we had `BMI` already), as well as variables with too many null values. We also manually parsed through the _V1A_ file in order to find additional covariates that were deemed important when predicting maternal morbidity, skipping over any variable with too many missing values.
 
@@ -50,7 +52,7 @@ We then imputated missing values using the following process:
   3. For numerical variables, we performed Z-score standardisation, expressing the variables as Z-scores (the "distance" from the mean of the distribution in standard deviation terms).
 
 
-## Delta dataset
+## 2. Delta dataset
 Second, we created a __delta__ dataset which measured the changes with respect to certain features that were measured on multiple visits. Specifically, we tracked changes in features from the following tables:
 
   - Clinical Measurements: V1B, V2B, V3B
@@ -63,6 +65,33 @@ Second, we created a __delta__ dataset which measured the changes with respect t
 
 Of these datasets, we only tracked those variables which were measured at multiple visits. We were interested in understanding how changes in these features might be predictive of adverse pregnancy outcomes. For numeric features, we simply calculated the difference in measurements between two visits. For instance, Resting blood pressure was measured at Visit 2(V2BA02a1) and Visit 3(V3BA02a1). These two measurements were used to create a new feature, V2BA02a1_delta_V3BA02a1, which is the difference in blood pressure measurements between Visit 3 and Visit 2, or $V3BA02a1 - V2BA02a1$. For encoded categorical features, we took a similar approach in tracking changes in these features across visits. Here
 
-## Target dataset
+## 3. Target dataset
+Third, we created the target dataset with the [create_targets_df.py](https://github.com/gabgilling/dse-nichd/blob/main/create_targets_df.py) script. We started by identifying variables available in the _pregnancy_outcomes_ file, zeroing in on variables most closely related to maternal morbidity. We then manually iterated over the _CMA_ file in order to choose additional variables linked to complications arising out of pregnancies.
+
+The `pOUTCOME` variable included in the _pregnancy_outcomes_ file was split into 3 new variables according to the categories included in it: `Stillbirth`, `Termination` and `Miscarriage`.
+
+As such, we have a total of `18` potential targets:
+- From _pregnancy_outcomes_:
+  - PEgHTN: Preeclampsia/Gestational hypertension
+  - ChronHTN: Chronic hypertension based on CMDA01 & CMAE01
+  - pOUTCOME split into:
+    - Stillbirth
+    - Termination
+    - Miscarriage
+- From _CMA_ postpartum complication:
+  - CMAD01a: 
+  - CMAD01b:
+  - CMAD01c:
+  - CMAD01d:
+  - CMAD01e:
+  - CMAD01f:
+  - CMAD01g:
+  - CMAD01h:
+- From _CMA_ postpartum mental health conditions:
+  - CMAE04a1c:
+  - CMAE04a2c:
+  - CMAE04a3c:
+  - CMAE04a4c:
+  - CMAE04a5c:
 
 # Results
