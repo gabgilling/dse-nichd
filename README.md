@@ -23,7 +23,7 @@ We find that [Ainesh to fill]
 
 ## Preparing the Data for Modeling
 
-## 1. Base Dataset
+### 1. Base Dataset
 First, we created our __base__ dataset in the [create_base_df.py](https://github.com/gabgilling/dse-nichd/blob/main/create_base_df.py) script which sought to capture pregnant women characteristics _before_ their pregnancies. When running [predictive] models, it is important to adjust/control for important covariates that are likely to account for the variation observed in the target variable. The base dataset was created by using the variables included in the _demographics_ ancillary file. We dropped redundant variables (i.e. we dropped `BMI_cat` since we had `BMI` already), as well as variables with too many null values. We also manually parsed through the _V1A_ file in order to find additional covariates that were deemed important when predicting maternal morbidity, skipping over any variable with too many missing values.
 
 As such, our base dataset consists of the following `16` variables:
@@ -53,7 +53,7 @@ We then imputated missing values using the following process:
   3. For numerical variables, we performed Z-score standardisation, expressing the variables as Z-scores (the "distance" from the mean of the distribution in standard deviation terms).
 
 
-## 2. Delta Feature Creation
+### 2. Delta Feature Creation
 
 Second, we created a __delta__ dataset which measured the changes with respect to certain features that were measured on multiple visits. Specifically, we tracked changes in features from the following tables:
 
@@ -75,7 +75,7 @@ For encoded categorical features, we took a similar approach in tracking changes
 
 Finally, once the delta features were created, we imputed the missing values within the numeric features using mean imputation. Having done this after calculting the delta features, this was akin to assuming that where the values were missing, patients had the average amount of change as found in the population. This seemed more approriate to us than imputing those missing values before standardizing and taking the difference between visits.
 
-## 3. Target dataset
+### 3. Target creation
 Third, we created the target dataset with the [create_targets_df.py](https://github.com/gabgilling/dse-nichd/blob/main/create_targets_df.py) script. We started by identifying variables available in the _pregnancy_outcomes_ file, zeroing in on variables most closely related to maternal morbidity. We then manually iterated over the _CMA_ file in order to choose additional variables linked to complications arising out of pregnancies.
 
 The `pOUTCOME` variable included in the _pregnancy_outcomes_ file was split into 3 new variables according to the categories included in it: `Stillbirth`, `Termination` and `Miscarriage`.
@@ -103,5 +103,8 @@ As such, we have a total of `18` potential targets:
   - CMAE04a3c:
   - CMAE04a4c:
   - CMAE04a5c:
+
+## Modeling outcome variables
+AINESH
 
 # Results
