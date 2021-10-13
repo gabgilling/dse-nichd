@@ -1,21 +1,32 @@
 # NICHD Submission
 
 Team: 
-- Ainesh Pandey - IBM
-- Gabriel Gilling - IBM
-- Demian Gass - IBM
-- (Andre Violante) - IBM
+- Ainesh Pandey - ainesh93@gmail.com - IBM
+- Gabriel Gilling  - gabrielgilling@gmail.com - IBM
+- Demian Gass - demian.gass@gmail.com - IBM
+
+# Running this project
+
+Run these files:
+
 
 # Abstract
 
-For this challenge, we decided to assess the impact of changes in features that were measured across the visits on different pregnancy outcomes. To that extent, we divided the challenge's dataset into several components: a base dataset with demographic information, a delta dataset capturing changes in features between visits and finally a target dataset with target variables.
+For this challenge, we decided to assess the impact of changes in features that were measured across the visits on different pregnancy outcomes. To that extent, we divided the challenge's dataset into several components: a __base__ dataset with demographic information, a __delta__ dataset capturing changes in features between visits and finally a __target__ dataset with outcome variables related to maternal morbidity.
 
-For each target variable we've identified, we run 3 classification models: a Lasso regression, a random forest and a catboost. For each model, we tabulate the most important features and for the Lasso model, we additionally tabulate the feature p-values in order to ascertain the uncertainty around their estimated effects.
+For each target variable we've identified, we run 2 classification models: a _Light Gradient Boosting Machine_ (LGBM) and a _Random Forest_ (RF). For each target variable, we first assess which of the two models perfomed the best in terms of f-1 score ( the harmonic mean between precision and recall metrics, going beyond the accuracy metric which we found to be unhelpful given the imbalanced distributions of the target variables). After dropping target variables with low support (AINESH FLAG), we worked with XXX targets. We then identify the 10 most important features in predicting each target variable and then break down the top feature's univariate distribution by racial categories.
+
+We find that [Ainesh to fill]
 
 
 # Methodology
 
-First, we created our __base__ dataset, which sought to capture pregnant women characteristics _before_ their pregnancies. This consisted of the following variables:
+## Preparing the Data for Modeling
+
+## 1. Base Dataset
+First, we created our __base__ dataset in the [create_base_df.py](https://github.com/gabgilling/dse-nichd/blob/main/create_base_df.py) script which sought to capture pregnant women characteristics _before_ their pregnancies. When running [predictive] models, it is important to adjust/control for important covariates that are likely to account for the variation observed in the target variable. The base dataset was created by using the variables included in the _demographics_ ancillary file. We dropped redundant variables (i.e. we dropped `BMI_cat` since we had `BMI` already), as well as variables with too many null values. We also manually parsed through the _V1A_ file in order to find additional covariates that were deemed important when predicting maternal morbidity, skipping over any variable with too many missing values.
+
+As such, our base dataset consists of the following `16` variables:
 - Demographic variables:
   - GAwks_screen
   - Age_at_V1
@@ -30,13 +41,20 @@ First, we created our __base__ dataset, which sought to capture pregnant women c
   - Ins_Comm         
   - Ins_Pers        
   - Ins_Othr
-  
 - Other important variables we identified:
-  - V1AF14
-  - V1AG01
-  - V1AG11
+  - V1AF14: Total family income for the past 12 months
+  - V1AG01: Have you ever drunk alcohol?
+  - V1AG11: Have you ever used illegal drugs or drugs not prescribed for you?
 
-#### Delta Feature Creation
+
+We then imputated missing values using the following process:
+  1. For numerical variables, we imputed the mean of the variable's distributions
+  2. For categorical variables, we imputed the mode (the category occuring the most often)
+  3. For numerical variables, we performed Z-score standardisation, expressing the variables as Z-scores (the "distance" from the mean of the distribution in standard deviation terms).
+
+
+## 2. Delta Feature Creation
+
 Second, we created a __delta__ dataset which measured the changes with respect to certain features that were measured on multiple visits. Specifically, we tracked changes in features from the following tables:
 
   - Clinical Measurements: V1B, V2B, V3B
@@ -56,5 +74,34 @@ For numeric features, we simply calculated the difference in measurements betwee
 For encoded categorical features, we took a similar approach in tracking changes in these features across visits by tracking the different combinations of changes that can occur within a feature. For instance, U1CD01 and U2CD01 track whether or not the placenta is implanted on the ipsilateral side for the right uterine artery during the first visit and second visit, respecitively. As an example, let us say that for a given patient the U1CD01 value is 1.0 (Yes) and the U2CD01 value is 2.0 (No), we create a delta feature, U1CD01_delta_U2CD01, and give this patient the value 1.0-2.0. The levels of this new delta feature then signify the different changes that can happen wihtin the measured feature. We also treat missing values for these encoded features as a level, so that we know if a patient's measurement changes from missing to present.
 
 Finally, once the delta features were created, we imputed the missing values within the numeric features using mean imputation. Having done this after calculting the delta features, this was akin to assuming that where the values were missing, patients had the average amount of change as found in the population. This seemed more approriate to us than imputing those missing values before standardizing and taking the difference between visits.
+
+## 3. Target dataset
+Third, we created the target dataset with the [create_targets_df.py](https://github.com/gabgilling/dse-nichd/blob/main/create_targets_df.py) script. We started by identifying variables available in the _pregnancy_outcomes_ file, zeroing in on variables most closely related to maternal morbidity. We then manually iterated over the _CMA_ file in order to choose additional variables linked to complications arising out of pregnancies.
+
+The `pOUTCOME` variable included in the _pregnancy_outcomes_ file was split into 3 new variables according to the categories included in it: `Stillbirth`, `Termination` and `Miscarriage`.
+
+As such, we have a total of `18` potential targets:
+- From _pregnancy_outcomes_:
+  - PEgHTN: Preeclampsia/Gestational hypertension
+  - ChronHTN: Chronic hypertension based on CMDA01 & CMAE01
+  - pOUTCOME split into:
+    - Stillbirth
+    - Termination
+    - Miscarriage
+- From _CMA_ postpartum complication:
+  - CMAD01a: 
+  - CMAD01b:
+  - CMAD01c:
+  - CMAD01d:
+  - CMAD01e:
+  - CMAD01f:
+  - CMAD01g:
+  - CMAD01h:
+- From _CMA_ postpartum mental health conditions:
+  - CMAE04a1c:
+  - CMAE04a2c:
+  - CMAE04a3c:
+  - CMAE04a4c:
+  - CMAE04a5c:
 
 # Results
