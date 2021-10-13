@@ -18,7 +18,6 @@ For each target variable we've identified, we run 2 classification models: a _Li
 
 We find that [Ainesh to fill]
 
-
 # Methodology
 
 ## Preparing the Data for Modeling
@@ -80,7 +79,7 @@ Third, we created the target dataset with the [create_targets_df.py](https://git
 
 The `pOUTCOME` variable included in the _pregnancy_outcomes_ file was split into 3 new variables according to the categories included in it: `Stillbirth`, `Termination` and `Miscarriage`.
 
-As such, we have a total of `18` potential targets:
+As such, we have a total of `18` potential targets coded as binary [0,1] variables:
 - From _pregnancy_outcomes_:
   - PEgHTN: Preeclampsia/Gestational hypertension
   - ChronHTN: Chronic hypertension based on CMDA01 & CMAE01
@@ -105,6 +104,10 @@ As such, we have a total of `18` potential targets:
   - CMAE04a5c:
 
 ## Modeling outcome variables
+justifying LGBM + RF 
+non-linear and non-parametric ML methods that a straightforward OLS model wouldn't get 
+RFs are ensemble methods, ensemble methods powerful
+
 AINESH
 
 # Results
