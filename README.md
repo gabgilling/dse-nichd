@@ -6,6 +6,11 @@ Team:
 - Demian Gass - IBM
 - (Andre Violante) - IBM
 
+# Running this project
+
+Run these files:
+
+
 # Abstract
 
 For this challenge, we decided to assess the impact of changes in features that were measured across the visits on different pregnancy outcomes. To that extent, we divided the challenge's dataset into several components: a __base__ dataset with demographic information, a __delta__ dataset capturing changes in features between visits and finally a __target__ dataset with outcome variables related to maternal morbidity.
@@ -17,7 +22,9 @@ We find that [Ainesh to fill]
 
 # Methodology
 
-First, we created our __base__ dataset, which sought to capture pregnant women characteristics _before_ their pregnancies. This consisted of the following variables:
+First, we created our __base__ dataset, which sought to capture pregnant women characteristics _before_ their pregnancies. When running [predictive] models, it is important to adjust for important covariates that could 
+
+This consisted of the following variables:
 - Demographic variables:
   - GAwks_screen
   - Age_at_V1
@@ -34,9 +41,9 @@ First, we created our __base__ dataset, which sought to capture pregnant women c
   - Ins_Othr
   
 - Other important variables we identified:
-  - V1AF14
-  - V1AG01
-  - V1AG11
+  - V1AF14: Total family income for the past 12 months
+  - V1AG01: Have you ever drunk alcohol?
+  - V1AG11: Have you ever used illegal drugs or drugs not prescribed for you?
 
 
 
