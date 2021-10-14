@@ -5,9 +5,10 @@ warnings.filterwarnings("ignore")
 import pickle
 import pandas as pd
 
+from my_path import PATH
+
 # import data
-path_to_data = "/Users/gabrielgilling/Downloads/"
-df = pd.read_csv(path_to_data+'nuMoM2b_Dataset_NICHD Data Challenge.csv')
+df = pd.read_csv(PATH+'/nuMoM2b_Dataset_NICHD Data Challenge.csv')
 
 demographic_cols = [
     'GAwks_screen',
@@ -48,4 +49,4 @@ df_demographics[[code for code in df_demographics.columns if code not in ['GAwks
 df_demographics = pd.concat([df_demographics, df.PublicID], axis = 1)
 
 # save file
-df_demographics.to_pickle('df_covariates.pkl')
+df_demographics.to_pickle('Data/df_covariates.pkl')

@@ -4,9 +4,9 @@ import json
 import pickle
 import warnings
 warnings.filterwarnings("ignore")
+from my_path import PATH
 
-path_to_data = "/Users/gabrielgilling/Downloads/"
-df = pd.read_csv(path_to_data+'nuMoM2b_Dataset_NICHD Data Challenge.csv')
+df = pd.read_csv(PATH+'/nuMoM2b_Dataset_NICHD Data Challenge.csv')
 
 #Drop Empty Rows and Empty Columns
 df = df.dropna(how='all')
@@ -57,4 +57,4 @@ df_targets = df_targets.apply(lambda x :pd.to_numeric(x, errors = 'coerce'))
 
 df_targets = pd.concat([df_targets, df.PublicID], axis = 1)
 
-df_targets.to_pickle('targets_df.pkl')
+df_targets.to_pickle('Target Pickles/targets_df.pkl')
