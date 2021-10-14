@@ -7,8 +7,15 @@ Team:
 
 # Running this project
 
-Run these files:
+In order to run our challenge submission , you will first need to run the `requirements.txt` file. After cloning the repo to your local drive, simply run `pip install -r requirements.txt` in your shell/terminal. This will adjust the package dependencies to match the ones used in our project. One of the models we used came from the LightGBM library, you may also want to navigate to package's [documentation](https://lightgbm.readthedocs.io/en/latest/Installation-Guide.html) for additional steps should the requirements file return an error.
 
+We have structured our analysis into 3 Jupyter Notebooks. Before running the notebooks, please set the paths to where the `nuMoM2b_Dataset_NICHD Data Challenge.csv` and `nuMoM2b_Codebook_NICHD Data Challenge.xlsx` files are located in the two `my_path.py` files located [here](https://github.com/gabgilling/dse-nichd/blob/main/scripts/my_path.py) and [here](https://github.com/gabgilling/dse-nichd/blob/main/Notebooks/my_path.py).
+
+First, [EDA and Data Preparation.ipynb](https://github.com/gabgilling/dse-nichd/blob/main/Notebooks/EDA%20and%20Data%20Preparation.ipynb) walks through the creation of the Delta variables used in our analysis, as well as the creation of the Covariates and Target variable datasets.
+
+Second, [Modeling.ipynb](https://github.com/gabgilling/dse-nichd/blob/main/Notebooks/Modeling.ipynb) runs Logistic Regression, Random Forest and LGBM models over selected target variables.
+
+Third, [Analysis of Results.ipynb](https://github.com/gabgilling/dse-nichd/blob/main/Notebooks/Analysis%20of%20Results.ipynb) goes over our findings, and provides graphics and plots explaining them.
 
 # Abstract
 
