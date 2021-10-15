@@ -40,8 +40,34 @@ The goal of our approach is to analyze the changes (or _deltas_) in measured cha
 
 ## Preparing the Data for Modeling
 
-### 1. Covariates Dataset
-First, we created our __covariates__ dataset in the [create_covariates_df.py](https://github.com/gabgilling/dse-nichd/blob/main/scripts/create_covariates_df.py) script which sought to capture pregnant women characteristics _before_ their pregnancies. When running [predictive] models, it is important to adjust/control for important covariates that are likely to account for the variation observed in the target variable. The covariates dataset was initially created by using the variables included in the _demographics_ ancillary file. We dropped redundant variables (i.e. we dropped `BMI_cat` since we had `BMI` already), as well as variables with too many null values. We also manually parsed through the _V1A_ file in order to find additional covariates that were deemed important when predicting maternal morbidity, skipping over any variable with too many missing values.
+
+### 1. Delta Feature Creation
+
+First, we created the __deltas__ dataset which measured the changes with respect to certain features that were measured on multiple visits. Specifically, we tracked changes in features from the following tables:
+
+  - Clinical Measurements: V1B, V2B, V3B
+  - Edinburgh Postnatal Depression Scale: V1C and V3C
+  - Sleep Monitoring: V1K and V3K
+  - Revised Sleep Questionnaire: V1L and V3L
+  - Uterine Artery Doppler: U1C, U2C, U3C
+  - Fetal Biometry: U2A and U3A
+  - Cervical Length: U2B and U3B
+
+Of these datasets, we only tracked those variables which were measured across multiple visits. We were interested in understanding how changes in these features might be predictive of adverse pregnancy outcomes. This technique could present an exciting new area of research in the medical field: how the rate of change in certain measures of health and body metrics throughout active pregnancies relates to adverse pregnancy outcomes (APOs). Our hope in taking this approach was to find certain *delta features* which showed signs of being predictive of certain APOs after controlling for covariates, including demographics, socio-economic status, race, etc. If we were to find evidence of this predictive power, it may tell us which metrics doctors and health professionals should be tracking during the antepartum and intrapartum phases of pregnancy when looking to screen for APOs. The ultimate goal with this research would be to build an alert system which flags certain patients as being at risk when we see worrying changes in real-time health measurements that have been identified as predictive for certain APOs. 
+
+Before calculating these differences, or delta features, we first standardized all of the numeric features. Null values in both the encoded features as well as the numeric features were left in the data, for now. We standardized the numeric features before calculating differences so that our delta features represented the change in a metric with respect to the population. Once this preprocessing step was complete, we began the process of creating the delta features.
+
+For numeric features, we simply calculated the difference in measurements between two visits. For instance, Resting blood pressure was measured at Visit 2(`V2BA02a1`) and Visit 3(`V3BA02a1`). These two measurements were used to create a new feature, `V2BA02a1_delta_V3BA02a1`, which is the difference in standardized blood pressure measurements between Visit 3 and Visit 2, or $`V3BA02a1` - `V2BA02a1`$. 
+
+For encoded categorical features, we took a similar approach in tracking changes in these features across visits by tracking the different combinations of changes that can occur within a feature. For instance, `U1CD01` and `U2CD01` track whether or not the placenta is implanted on the ipsilateral side for the right uterine artery during the first visit and second visit, respectively. As an example, let us say that for a given patient, the `U1CD01` value is *1.0 (Yes)* and the `U2CD01` value is *2.0 (No)*. We create a delta feature, `U1CD01_delta_U2CD01`, and give this patient the value *1.0-2.0*. The levels of this new delta feature then signify the different changes that can happen within the measured feature. We also treat missing values for these encoded features as a level, in order to know if a patient's measurement changes from missing to present.
+
+Finally, once the delta features were created, we imputed the missing values within the numeric features using mean imputation. Having done this after calculating the deltas between standardized features, this was akin to assuming that where the values were missing, patients had the average amount of change as found in the population. This is a more appropriate way of handling missing values, given our actual inputs are the deltas between features, not the features themselves.
+
+Please see the [EDA and Data Preparation](https://github.com/gabgilling/dse-nichd/blob/main/Notebooks/EDA%20and%20Data%20Preparation.ipynb) notebook for a detailed run-through of our delta features prep.
+
+### 2. Covariates Dataset (created in EDA and Data Preparation Notebook)
+
+Second, we created our __covariates__ dataset in the [create_covariates_df.py](https://github.com/gabgilling/dse-nichd/blob/main/scripts/create_covariates_df.py) script which sought to capture pregnant women characteristics _before_ their pregnancies. When running [predictive] models, it is important to adjust/control for important covariates that are likely to account for the variation observed in the target variable. The covariates dataset was initially created by using the variables included in the _demographics_ ancillary file. We dropped redundant variables (i.e. we dropped `BMI_cat` since we had `BMI` already), as well as variables with too many null values. We also manually parsed through the _V1A_ file in order to find additional covariates that were deemed important when predicting maternal morbidity, skipping over any variable with too many missing values.
 
 As such, our covariates dataset consists of the following `16` variables:
 - Demographic variables:
@@ -70,31 +96,8 @@ We then imputated missing values using the following process:
   3. For numerical variables, we performed Z-score standardisation, expressing the variables as Z-scores (the "distance" from the mean of the distribution in standard deviation terms).
 
 
-### 2. Delta Feature Creation
+### 3. Target creation (created in EDA and Data Preparation Notebook)
 
-Second, we created the __deltas__ dataset which measured the changes with respect to certain features that were measured on multiple visits. Specifically, we tracked changes in features from the following tables:
-
-  - Clinical Measurements: V1B, V2B, V3B
-  - Edinburgh Postnatal Depression Scale: V1C and V3C
-  - Sleep Monitoring: V1K and V3K
-  - Revised Sleep Questionnaire: V1L and V3L
-  - Uterine Artery Doppler: U1C, U2C, U3C
-  - Fetal Biometry: U2A and U3A
-  - Cervical Length: U2B and U3B
-
-Of these datasets, we only tracked those variables which were measured across multiple visits. We were interested in understanding how changes in these features might be predictive of adverse pregnancy outcomes. This technique could present an exciting new area of research in the medical field: how the rate of change in certain measures of health and body metrics throughout active pregnancies relates to adverse pregnancy outcomes (APOs). Our hope in taking this approach was to find certain *delta features* which showed signs of being predictive of certain APOs after controlling for covariates, including demographics, socio-economic status, race, etc. If we were to find evidence of this predictive power, it may tell us which metrics doctors and health professionals should be tracking during the antepartum and intrapartum phases of pregnancy when looking to screen for APOs. The ultimate goal with this research would be to build an alert system which flags certain patients as being at risk when we see worrying changes in real-time health measurements that have been identified as predictive for certain APOs. 
-
-Before calculating these differences, or delta features, we first standardized all of the numeric features. Null values in both the encoded features as well as the numeric features were left in the data, for now. We standardized the numeric features before calculating differences so that our delta features represented the change in a metric with respect to the population. Once this preprocessing step was complete, we began the process of creating the delta features.
-
-For numeric features, we simply calculated the difference in measurements between two visits. For instance, Resting blood pressure was measured at Visit 2(`V2BA02a1`) and Visit 3(`V3BA02a1`). These two measurements were used to create a new feature, `V2BA02a1_delta_V3BA02a1`, which is the difference in standardized blood pressure measurements between Visit 3 and Visit 2, or $`V3BA02a1` - `V2BA02a1`$. 
-
-For encoded categorical features, we took a similar approach in tracking changes in these features across visits by tracking the different combinations of changes that can occur within a feature. For instance, `U1CD01` and `U2CD01` track whether or not the placenta is implanted on the ipsilateral side for the right uterine artery during the first visit and second visit, respectively. As an example, let us say that for a given patient, the `U1CD01` value is *1.0 (Yes)* and the `U2CD01` value is *2.0 (No)*. We create a delta feature, `U1CD01_delta_U2CD01`, and give this patient the value *1.0-2.0*. The levels of this new delta feature then signify the different changes that can happen within the measured feature. We also treat missing values for these encoded features as a level, in order to know if a patient's measurement changes from missing to present.
-
-Finally, once the delta features were created, we imputed the missing values within the numeric features using mean imputation. Having done this after calculating the deltas between standardized features, this was akin to assuming that where the values were missing, patients had the average amount of change as found in the population. This is a more appropriate way of handling missing values, given our actual inputs are the deltas between features, not the features themselves.
-
-Please see the [EDA and Data Preparation](https://github.com/gabgilling/dse-nichd/blob/main/Notebooks/EDA%20and%20Data%20Preparation.ipynb) notebook for a detailed run-through of our delta features prep.
-
-### 3. Target creation
 Third, we created the target dataset with the [create_targets_df.py](https://github.com/gabgilling/dse-nichd/blob/main/scripts/create_targets_df.py) script. We started by identifying variables available in the _pregnancy_outcomes_ file, zeroing in on variables most closely related to maternal morbidity. We then manually iterated over the _CMA_ file in order to identify additional features linked to complications arising out of pregnancy.
 
 The `pOUTCOME` variable included in the _pregnancy_outcomes_ file was split into 3 new variables according to the categories included in it: `Stillbirth`, `Termination` and `Miscarriage`.
