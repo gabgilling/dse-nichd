@@ -136,7 +136,8 @@ The outcome variables are categorical (we are predicting a boolean outcome indic
 - Single models are usually subject to a bias/variance tradeoff. For example, an unpruned decision tree can classify every single training data point perfectly, leading to low bias and high variance (overfitting). However, a single decision stump would result in high bias and low variance (underfitting). In practice, we find that employing random forests (an ensemble of trees) leaves bias unaffected while reducing variance, allowing us to get the best of both worlds.
 <p align="center">
   <img src="Images/BiasVarianceTradeoff.jpeg" width="600"><br>
-  <em>Bias vs. Variance Tradeoff</em>
+  <em>Bias vs. Variance Tradeoff</em><br>
+  <em><a href="https://towardsdatascience.com/bias-and-variance-but-what-are-they-really-ac539817e171">Source</a></em>
 </p>
 
 - Ensemble methods can take advantage of many different types of models, having each "vote" on the prediction of the output variable. This allows us to take advantage of the benefits of each included models, expecting the law of large numbers (or, in this case, larger numbers) to more often identify the correct classification.
