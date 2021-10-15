@@ -13,7 +13,7 @@ We have structured our analysis into 3 Jupyter Notebooks. Before running the not
 
 First, [EDA and Data Preparation.ipynb](https://github.com/gabgilling/dse-nichd/blob/main/Notebooks/EDA%20and%20Data%20Preparation.ipynb) walks through the creation of the Delta variables used in our analysis, as well as the creation of the Covariates and Target variable datasets.
 
-Second, [Modeling.ipynb](https://github.com/gabgilling/dse-nichd/blob/main/Notebooks/Modeling.ipynb) runs Logistic Regression, Random Forest and LGBM models over selected target variables.
+Second, [Modeling.ipynb](https://github.com/gabgilling/dse-nichd/blob/main/Notebooks/Modeling.ipynb) runs Logistic Regression, Random Forest, and LGBM models for selected target variables.
 
 Third, [Analysis of Results.ipynb](https://github.com/gabgilling/dse-nichd/blob/main/Notebooks/Analysis%20of%20Results.ipynb) goes over our findings, and provides graphics and plots explaining them.
 
