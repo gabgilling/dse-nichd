@@ -41,7 +41,7 @@ The goal of our approach is to analyze the changes (or _deltas_) in measured cha
 ## Preparing the Data for Modeling
 
 ### 1. Covariates Dataset
-First, we created our __covariates__ dataset in the [create_covariates_df.py](https://github.com/gabgilling/dse-nichd/blob/main/create_covariates_df.py) script which sought to capture pregnant women characteristics _before_ their pregnancies. When running [predictive] models, it is important to adjust/control for important covariates that are likely to account for the variation observed in the target variable. The covariates dataset was initially created by using the variables included in the _demographics_ ancillary file. We dropped redundant variables (i.e. we dropped `BMI_cat` since we had `BMI` already), as well as variables with too many null values. We also manually parsed through the _V1A_ file in order to find additional covariates that were deemed important when predicting maternal morbidity, skipping over any variable with too many missing values.
+First, we created our __covariates__ dataset in the [create_covariates_df.py](https://github.com/gabgilling/dse-nichd/blob/main/scripts/create_covariates_df.py) script which sought to capture pregnant women characteristics _before_ their pregnancies. When running [predictive] models, it is important to adjust/control for important covariates that are likely to account for the variation observed in the target variable. The covariates dataset was initially created by using the variables included in the _demographics_ ancillary file. We dropped redundant variables (i.e. we dropped `BMI_cat` since we had `BMI` already), as well as variables with too many null values. We also manually parsed through the _V1A_ file in order to find additional covariates that were deemed important when predicting maternal morbidity, skipping over any variable with too many missing values.
 
 As such, our covariates dataset consists of the following `16` variables:
 - Demographic variables:
@@ -95,7 +95,7 @@ Finally, once the delta features were created, we imputed the missing values wit
 Please see the [EDA and Data Preparation](https://github.com/gabgilling/dse-nichd/blob/main/Notebooks/EDA%20and%20Data%20Preparation.ipynb) notebook for a detailed run-through of our delta features prep.
 
 ### 3. Target creation
-Third, we created the target dataset with the [create_targets_df.py](https://github.com/gabgilling/dse-nichd/blob/main/create_targets_df.py) script. We started by identifying variables available in the _pregnancy_outcomes_ file, zeroing in on variables most closely related to maternal morbidity. We then manually iterated over the _CMA_ file in order to identify additional features linked to complications arising out of pregnancy.
+Third, we created the target dataset with the [create_targets_df.py](https://github.com/gabgilling/dse-nichd/blob/main/scripts/create_targets_df.py) script. We started by identifying variables available in the _pregnancy_outcomes_ file, zeroing in on variables most closely related to maternal morbidity. We then manually iterated over the _CMA_ file in order to identify additional features linked to complications arising out of pregnancy.
 
 The `pOUTCOME` variable included in the _pregnancy_outcomes_ file was split into 3 new variables according to the categories included in it: `Stillbirth`, `Termination` and `Miscarriage`.
 
