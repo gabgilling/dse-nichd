@@ -123,7 +123,7 @@ As such, we have a total of `18` potential targets coded as binary [0,1] variabl
   - CMAE04a4c: Postpartum post traumatic stress disorder
   - CMAE04a5c: Postpartum schizophrenia/schizoaffective disorder
 
-## Modeling outcome variables
+## Modeling
 The outcome variables are categorical (we are predicting a boolean outcome indicating whether an observed pregnancy will result in the selected target morbidity). Historically, medical research surrounding classification problems have relied heavily on logistic regression techniques. However, we contend that there is much more value in **ensemble** and **non-parametric** methods, which usually have higher predictive power.
 
 Ensemble methods, like random forests, bring a lot of benefits to the table.
