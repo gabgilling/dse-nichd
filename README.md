@@ -130,9 +130,9 @@ As such, we have a total of `18` potential targets coded as binary [0,1] variabl
 
 We joined the covariate and delta features into a __base__ dataset. To be able to compare the coefficients or feature importances associated with the delta variables in our results, we had to normalize the base dataset using min-max normalization (so all features' ranges were [0, 1]). This approach is usually not robust to outliers, but we had already standardized the numeric features before creating the deltas, so the impact of outliers was minimized. We then looped through the various targets we had selected, and modeled on each.
 
-The outcome variables are categorical (we are predicting a boolean outcome indicating whether an observed pregnancy will result in the selected target morbidity). Historically, medical research surrounding classification problems have relied heavily on logistic regression techniques. However, we contend that there is much more value in **ensemble** and **non-parametric** methods, which usually have higher predictive power.
+The outcome variables are categorical (we are predicting a boolean outcome indicating whether an observed pregnancy will result in the selected target morbidity). Historically, medical research surrounding classification problems have relied heavily on logistic regression techniques. However, we contend that there is much more value in **ensemble** and **boosting** methods, which usually have higher predictive power.
 
-Ensemble methods, like random forests, bring a lot of benefits to the table.
+`Ensemble methods`, like random forests, bring a lot of benefits to the table.
 - Single models are usually subject to a bias/variance tradeoff. For example, an unpruned decision tree can classify every single training data point perfectly, leading to low bias and high variance (overfitting). However, a single decision stump would result in high bias and low variance (underfitting). In practice, we find that employing random forests (an ensemble of trees) leaves bias unaffected while reducing variance, allowing us to get the best of both worlds.
 <p align="center">
   <img src="Images/BiasVarianceTradeoff.jpeg" width="600"><br>
@@ -147,7 +147,7 @@ Ensemble methods, like random forests, bring a lot of benefits to the table.
 
 - In models like random forests, bootstrapping allows individual decision trees in the random forest to "specialize" on different parts of the feature space.
 
-Similarly, non-parametric boosting algorithms also offer higher predictive power.
+Similarly, `boosting algorithms` also offer higher predictive power.
 - Weak learners, like like logistic regression or shallow decision trees, are good at finding general "rules of thumb" because of the associated low variance. On their own, they are not good at solving complicated problems. However, a bunch of weak classifiers that specialize in different parts of the input space can do much better than a single classifier. That is the basis of boosting.
 - Each consecutive weak learner in a boosting algorithm specializes in the part of the feature space the previous learners performed poorly on. The resulting classification is found by taking a weighted "vote" among all of the learners, with classifiers that are more "sure" of their prediction having a higher weight. In practice, we see that these boosted weak models outperform individual classifiers.
 - Boosting is often robust to overfitting. In practice, we often see the test set error continue to decrease even while the train set error stays constant (or even 0!).
@@ -157,9 +157,9 @@ Similarly, non-parametric boosting algorithms also offer higher predictive power
 </p>
 
 For the purposes of our analysis, we will run the following three models for each target variable:
-- A logistic regression, with the regularization variable tuned
-- A random forest, with various hyperparameters tuned
-- A Light GBM (gradient boosting machine), with various hyperparameters tuned
+- A `Logistic Regression model`, with the regularization variable tuned
+- A `Random Forest model`, with various hyperparameters tuned
+- A `Light GBM (gradient boosting machine)`, with various hyperparameters tuned
 
 In practice, we generally see random forests and boosting algorithms outperforming logistic regression models for complicated problems with a large amount of data. However, many of our target variables have a small number of true cases. Therefore, it was plausible that logistic regression could outperform the other more complicated models for some of the output variables. Therefore, we let the model performance metrics themselves (specifically, the F-1 score on the True class) tell us which models did best. Please see the [Modeling](https://github.com/gabgilling/dse-nichd/blob/main/Notebooks/Modeling.ipynb) notebook for a detailed run-through of our modeling efforts.
 
