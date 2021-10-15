@@ -127,6 +127,11 @@ The outcome variables are categorical (we are predicting a boolean outcome indic
 
 Ensemble methods, like random forests, bring a lot of benefits to the table.
 - Single models are usually subject to a bias/variance tradeoff. For example, an unpruned decision tree can classify every single training data point perfectly, leading to low bias and high variance (overfitting). However, a single decision stump would result in high bias and low variance (underfitting). In practice, we find that employing random forests (an ensemble of trees) leaves bias unaffected while reducing variance, allowing us to get the best of both worlds.
+![LINK TO IMAGE](https://github.com/gabgilling/dse-nichd/tree/main/images/BiasVarianceTradeoff.jpeg?raw=true)
+<p align="center">
+  <img src="https://github.com/gabgilling/dse-nichd/tree/main/images/BiasVarianceTradeoff.jpeg?raw=true" width="350">
+</p>
+![stack Overflow](http://lmsotfy.com/so.png)
 - Ensemble methods can take advantage of many different types of models, having each "vote" on the prediction of the output variable. This allows us to take advantage of the benefits of each included models, expecting the law of large numbers (or, in this case, larger numbers) to more often identify the correct classification.
 - In models like random forests, bootstrapping allows individual decision trees in the random forest to "specialize" on different parts of the feature space.
 
