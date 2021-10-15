@@ -127,6 +127,9 @@ As such, we have a total of `18` potential targets coded as binary [0,1] variabl
   - CMAE04a5c: Postpartum schizophrenia/schizoaffective disorder
 
 ## Modeling
+
+We joined the covariate and delta features into a __base__ dataset. To be able to compare the coefficients or feature importances associated with the delta variables in our results, we normalized the base dataset using min-max normalization. This approach is usually not robust to outliers, but we had already standardized the numeric features before creating the deltas, so the impact of outliers was minimized. We then looped through the various targets we had selected, and modeled on each.
+
 The outcome variables are categorical (we are predicting a boolean outcome indicating whether an observed pregnancy will result in the selected target morbidity). Historically, medical research surrounding classification problems have relied heavily on logistic regression techniques. However, we contend that there is much more value in **ensemble** and **non-parametric** methods, which usually have higher predictive power.
 
 Ensemble methods, like random forests, bring a lot of benefits to the table.
