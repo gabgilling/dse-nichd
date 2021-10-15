@@ -91,7 +91,7 @@ For encoded categorical features, we took a similar approach in tracking changes
 
 Finally, once the delta features were created, we imputed the missing values within the numeric features using mean imputation. Having done this after calculating the deltas between standardized features, this was akin to assuming that where the values were missing, patients had the average amount of change as found in the population. This is a more appropriate way of handling missing values, given our actual inputs are the deltas between features, not the features themselves.
 
-Please see the *Exploratory Data Analysis and Data Prep* notebook for a detailed run-through of our delta features prep.
+Please see the *EDA and Data Preparation* notebook for a detailed run-through of our delta features prep.
 
 ### 3. Target creation
 Third, we created the target dataset with the [create_targets_df.py](https://github.com/gabgilling/dse-nichd/blob/main/create_targets_df.py) script. We started by identifying variables available in the _pregnancy_outcomes_ file, zeroing in on variables most closely related to maternal morbidity. We then manually iterated over the _CMA_ file in order to identify additional features linked to complications arising out of pregnancy.
