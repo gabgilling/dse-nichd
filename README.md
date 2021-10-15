@@ -24,15 +24,13 @@ For this challenge, we decided to assess the impact of changes in features that 
 - a __deltas__ dataset capturing changes in features across multiple visits, and
 - a __targets__ dataset with outcome variables related to maternal morbidity.
 
-For each target variable, we ran 3 classification models: a _Lasso Logistic Regression Model_, a _Light Gradient Boosting Machine_ (LGBM) and a _Random Forest_ (RF). We first assessed which of the three models perfomed the best in terms of F-1 score (the harmonic mean between precision and recall metrics, going beyond the accuracy metric which we found to be unhelpful given the imbalanced distributions of the target variables). After dropping target variables with low support, we were able to identify impactful features for the following morbidities:
+For each target variable, we trained and tuned 3 classification models: a _Logistic Regression Model_, a _Light Gradient Boosting Machine (LGBM)_ and a _Random Forest_. We assessed which of the three models perfomed the best in terms of F-1 score (the harmonic mean between precision and recall metrics, going beyond the accuracy metric which we found to be unhelpful given the imbalanced distributions of the target variables). After dropping target variables with low support, we were able to identify impactful features for the following morbidities:
 - Chronic Hypertension
 - Postpartum Depression
 - Postpartum Anxiety
 - Preeclampsia
 
-We then identified the 10 most important features in predicting each target and broke down the top features' univariate distributions by racial categories.
-
-We find that there are several impactful delta features related to the mother's sleep behavior, mother's general health, pregnancy progression, and fetal health that
+We then identified the 10 most important features in predicting each target and broke down the top features' univariate distributions by racial categories. We find that there are several impactful delta features related to the mother's sleep behavior, the mother's general health, pregnancy progression, and fetal health that also demonstrate distinctly different distributional behavior for the majority race class (white women) when compared to minority race classes. These findings can guide the direction of future research into the drivers of certain APOs analyzed in this solution.
 
 # Methodology
 
