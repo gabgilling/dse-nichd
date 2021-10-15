@@ -91,6 +91,8 @@ For encoded categorical features, we took a similar approach in tracking changes
 
 Finally, once the delta features were created, we imputed the missing values within the numeric features using mean imputation. Having done this after calculating the deltas between standardized features, this was akin to assuming that where the values were missing, patients had the average amount of change as found in the population. This is a more appropriate way of handling missing values, given our actual inputs are the deltas between features, not the features themselves.
 
+Please see the *Exploratory Data Analysis and Data Prep* notebook for a detailed run-through of our delta features prep.
+
 ### 3. Target creation
 Third, we created the target dataset with the [create_targets_df.py](https://github.com/gabgilling/dse-nichd/blob/main/create_targets_df.py) script. We started by identifying variables available in the _pregnancy_outcomes_ file, zeroing in on variables most closely related to maternal morbidity. We then manually iterated over the _CMA_ file in order to identify additional features linked to complications arising out of pregnancy.
 
@@ -121,11 +123,23 @@ As such, we have a total of `18` potential targets coded as binary [0,1] variabl
   - CMAE04a5c: Postpartum schizophrenia/schizoaffective disorder
 
 ## Modeling outcome variables
-justifying LGBM + RF 
-non-linear and non-parametric ML methods that a straightforward OLS model wouldn't get 
-RFs are ensemble methods, ensemble methods powerful
+The outcome variables are categorical (we are predicting a boolean outcome indicating whether an observed pregnancy will result in the selected target morbidity). Historically, medical research surrounding classification problems have relied heavily on logistic regression techniques. However, we contend that there is much more value in **ensemble** and **non-parametric** methods, which usually have higher predictive power.
 
-AINESH
+Ensemble methods, like random forests, bring a lot of benefits to the table.
+- Single models are usually subject to a bias/variance tradeoff. For example, an unpruned decision tree can classify every single training data point perfectly, leading to low bias and high variance (overfitting). However, a single decision stump would result in high bias and low variance (underfitting). In practice, we find that employing random forests (an ensemble of trees) leaves bias unaffected while reducing variance, allowing us to get the best of both worlds.
+- Ensemble methods can take advantage of many different types of models, having each "vote" on the prediction of the output variable. This allows us to take advantage of the benefits of each included models, expecting the law of large numbers (or, in this case, larger numbers) to more often identify the correct classification.
+- In models like random forests, bootstrapping allows individual decision trees in the random forest to "specialize" on different parts of the feature space.
+
+Similarly, non-parametric boosting algorithms also offer higher predictive power.
+- Weak learners, like like logistic regression or shallow decision trees, are good at finding general "rules of thumb" because of the associated low variance. On their own, they are not good at solving complicated problems. However, a bunch of weak classifiers that specialize in different parts of the input space can do much better than a single classifier. That is the basis of boosting.
+- Each consecutive weak learner in a boosting algorithm specializes in the part of the feature space the previous learners performed poorly on. The resulting classification is found by taking a weighted "vote" among all of the learners, with classifiers that are more "sure" of their prediction having a higher weight. In practice, we see that these boosted weak models outperform individual classifiers.
+
+For the purposes of our analysis, we will run the following three models for each target variable:
+- A logistic regression, with the regularization variable tuned
+- A random forest, with various hyperparameters tuned
+- A Light GBM (gradient boosting machine), with various hyperparameters tuned
+
+In practice, we generally see random forests and boosting algorithms outperforming logistic regression models for complicated problems with a large amount of data. However, many of our target variables have a small number of true cases. Therefore, it was plausible that logistic regression could outperform the other more complicated models for some of the output variables. Therefore, we let the model performance metrics themselves tell us which models did best. Please see the *Modeling* notebook for a detailed run-through of our modeling efforts.
 
 # Analysis of Results
 In understanding the results of our models, we were most interested in understanding which models appeared to have the most predictive power of certain target features, as well as which features were most important in predicting certain adverse outcomes. Models that perform well in predicting our target features show evidence that a machine learning approach could be useful when trying to predict adverse pregnancy outcomes in future patients. Finding features that appear to be important when predicting those outcomes provides us with some explainability and potential areas for future research (i.e. why are these features so predictive of certain APOs?). 
