@@ -127,13 +127,13 @@ The outcome variables are categorical (we are predicting a boolean outcome indic
 
 Ensemble methods, like random forests, bring a lot of benefits to the table.
 - Single models are usually subject to a ![bias/variance tradeoff](https://github.com/gabgilling/dse-nichd/tree/main/images/BiasVarianceTradeoff.jpeg?raw=true). For example, an unpruned decision tree can classify every single training data point perfectly, leading to low bias and high variance (overfitting). However, a single decision stump would result in high bias and low variance (underfitting). In practice, we find that employing random forests (an ensemble of trees) leaves bias unaffected while reducing variance, allowing us to get the best of both worlds.
-
-- Ensemble methods can take advantage of many different types of models, having each "vote" on the prediction of the output variable. This allows us to take advantage of the benefits of each included models, expecting the law of large numbers (or, in this case, larger numbers) to more often identify the correct classification.
+- Ensemble methods can take advantage of many different types of models, having each !["vote"](https://github.com/gabgilling/dse-nichd/tree/main/images/RF_Voting.png?raw=true) on the prediction of the output variable. This allows us to take advantage of the benefits of each included models, expecting the law of large numbers (or, in this case, larger numbers) to more often identify the correct classification.
 - In models like random forests, bootstrapping allows individual decision trees in the random forest to "specialize" on different parts of the feature space.
 
 Similarly, non-parametric boosting algorithms also offer higher predictive power.
-- Weak learners, like like logistic regression or shallow decision trees, are good at finding general "rules of thumb" because of the associated low variance. On their own, they are not good at solving complicated problems. However, a bunch of weak classifiers that specialize in different parts of the input space can do much better than a single classifier. That is the basis of boosting.
+- Weak learners, like like logistic regression or shallow decision trees, are good at finding general "rules of thumb" because of the associated low variance. On their own, they are not good at solving complicated problems. However, a bunch of weak classifiers that specialize in different parts of the input space can do much better than a single classifier. That is the basis of ![boosting](https://github.com/gabgilling/dse-nichd/tree/main/images/BoostingProcess.png?raw=true).
 - Each consecutive weak learner in a boosting algorithm specializes in the part of the feature space the previous learners performed poorly on. The resulting classification is found by taking a weighted "vote" among all of the learners, with classifiers that are more "sure" of their prediction having a higher weight. In practice, we see that these boosted weak models outperform individual classifiers.
+- Boosting is often robust to overfitting. In practice, we often see the test set error continue to decrease even while the train set error stays constant (or even 0!).
 
 For the purposes of our analysis, we will run the following three models for each target variable:
 - A logistic regression, with the regularization variable tuned
