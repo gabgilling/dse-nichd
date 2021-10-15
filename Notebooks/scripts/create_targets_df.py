@@ -57,4 +57,4 @@ df_targets = df_targets.apply(lambda x :pd.to_numeric(x, errors = 'coerce'))
 
 df_targets = pd.concat([df_targets, df.PublicID], axis = 1)
 
-df_targets.to_pickle('Target Pickles/df_targets.pkl')
+df_targets.to_pickle('../Data/df_targets.pkl')

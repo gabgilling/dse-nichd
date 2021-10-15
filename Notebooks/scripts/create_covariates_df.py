@@ -49,4 +49,4 @@ df_demographics[[code for code in df_demographics.columns if code not in ['GAwks
 df_demographics = pd.concat([df_demographics, df.PublicID], axis = 1)
 
 # save file
-df_demographics.to_pickle('Data/df_covariates.pkl')
+df_demographics.to_pickle('../Data/df_covariates.pkl')
