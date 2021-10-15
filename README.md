@@ -105,20 +105,20 @@ As such, we have a total of `18` potential targets coded as binary [0,1] variabl
     - Termination
     - Miscarriage
 - From _CMA_ postpartum complication:
-  - CMAD01a: 
-  - CMAD01b:
-  - CMAD01c:
-  - CMAD01d:
-  - CMAD01e:
-  - CMAD01f:
-  - CMAD01g:
-  - CMAD01h:
+  - CMAD01a: Postpartum hemorrhage requiring transfusion
+  - CMAD01b: Retained placenta
+  - CMAD01c: Endometritis
+  - CMAD01d: Wound Infection
+  - CMAD01e: Wound dehiscence requiring debridement, packing, and/or reapproximation
+  - CMAD01f: Cardiomyopathy
+  - CMAD01g: Hysterectomy
+  - CMAD01h: Surgery other than for delivery of baby or hysterectomy
 - From _CMA_ postpartum mental health conditions:
-  - CMAE04a1c:
-  - CMAE04a2c:
-  - CMAE04a3c:
-  - CMAE04a4c:
-  - CMAE04a5c:
+  - CMAE04a1c: Postpartum depression
+  - CMAE04a2c: Postpartum anxiety
+  - CMAE04a3c: Postpartum bipolar disorder
+  - CMAE04a4c: Postpartum post traumatic stress disorder
+  - CMAE04a5c: Postpartum schizophrenia/schizoaffective disorder
 
 ## Modeling outcome variables
 justifying LGBM + RF 
