@@ -96,7 +96,7 @@ We then imputated missing values using the following process:
   3. For numerical variables, we performed Z-score standardisation, expressing the variables as Z-scores (the "distance" from the mean of the distribution in standard deviation terms).
 
 
-### 3. Target creation (created in EDA and Data Preparation Notebook)
+### 3. Creating the Targets Dataset (in the EDA and Data Preparation Notebook)
 
 Third, we created the target dataset with the [create_targets_df.py](https://github.com/gabgilling/dse-nichd/blob/main/scripts/create_targets_df.py) script. We started by identifying variables available in the _pregnancy_outcomes_ file, zeroing in on variables most closely related to maternal morbidity. We then manually iterated over the _CMA_ file in order to identify additional features linked to complications arising out of pregnancy.
 
@@ -128,7 +128,7 @@ As such, we have a total of `18` potential targets coded as binary [0,1] variabl
 
 ## Modeling
 
-We joined the covariate and delta features into a __base__ dataset. To be able to compare the coefficients or feature importances associated with the delta variables in our results, we normalized the base dataset using min-max normalization. This approach is usually not robust to outliers, but we had already standardized the numeric features before creating the deltas, so the impact of outliers was minimized. We then looped through the various targets we had selected, and modeled on each.
+We joined the covariate and delta features into a __base__ dataset. To be able to compare the coefficients or feature importances associated with the delta variables in our results, we had to normalize the base dataset using min-max normalization (so all features' ranges were [0, 1]). This approach is usually not robust to outliers, but we had already standardized the numeric features before creating the deltas, so the impact of outliers was minimized. We then looped through the various targets we had selected, and modeled on each.
 
 The outcome variables are categorical (we are predicting a boolean outcome indicating whether an observed pregnancy will result in the selected target morbidity). Historically, medical research surrounding classification problems have relied heavily on logistic regression techniques. However, we contend that there is much more value in **ensemble** and **non-parametric** methods, which usually have higher predictive power.
 
@@ -150,9 +150,13 @@ For the purposes of our analysis, we will run the following three models for eac
 In practice, we generally see random forests and boosting algorithms outperforming logistic regression models for complicated problems with a large amount of data. However, many of our target variables have a small number of true cases. Therefore, it was plausible that logistic regression could outperform the other more complicated models for some of the output variables. Therefore, we let the model performance metrics themselves (specifically, the F-1 score on the True class) tell us which models did best. Please see the [Modeling](https://github.com/gabgilling/dse-nichd/blob/main/Notebooks/Modeling.ipynb) notebook for a detailed run-through of our modeling efforts.
 
 # Analysis of Results
-In understanding the results of our models, we were most interested in understanding which models appeared to have the most predictive power for certain target features, as well as which features were most impactful in predicting certain APOs. Models that perform well in predicting our target features show evidence that a machine learning approach could be useful when trying to predict APOs in future patients. Finding features that appear to be important when predicting those outcomes provides us with some explainability and potential areas for future research (i.e. why are these features so predictive of certain APOs?). 
+In understanding the results of our models, we were most interested in identifying:
+- which models appeared to have the most predictive power for certain target features, and
+- which features were most impactful in predicting certain APOs
 
-First, we only focus on models where the support for the minority class is greater than 50. This means that we drop those models where there were fewer than 50 observations of the "positive" instances in our test set, or cases in which the APOs did occur (e.g. there were fewer than 50 cases of miscarriage in our test set, so we decided to drop those models from our analysis). We decided to take this approach because model results can be misleading and uncertain when the support is so low.
+Models that perform well in predicting our target features show evidence that a machine learning approach could be useful when trying to predict APOs in future patients. Finding features that appear to be important when predicting those outcomes provides us with some explainability and potential areas for future research (i.e. why are these features so predictive of certain APOs?). 
+
+First, we only focus on models where the support for the minority class in our test set (we took a 70/30 split between our train set and test set) is greater than 50. This means that we drop those models where there were fewer than 50 observations of the "positive" instances in our test set, or cases in which the APOs did occur (e.g. there were fewer than 50 cases of miscarriage in our test set, so we decided to drop those models from our analysis). We decided to take this approach because model results can be misleading and uncertain when the support is so low.
 
 We are left with 4 target features: Chronic Hypertension (`ChronHTN`), Postpartum Depression (`CMAE04a1c`), Postpartum Anxiety (`CMAE04a2c`), and Preeclampsia (`PEgHTN`). For these 4 targets, we select the modeling approach (Logistic Regression, Random Forest, LGBM) that achieved the highest F-1 score. We decided to focus on F-1 score because of the large class imbalance in our data (most patients did not have the APOs occur). In this context, false negatives are extremely costly to us, and so we want to place an emphasis on recall. However, we also don't want to dilute our predictions with false positives. The F-1 score allows us to optimize on both recall and precision.
 
