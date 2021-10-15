@@ -19,7 +19,10 @@ Third, [Analysis of Results.ipynb](https://github.com/gabgilling/dse-nichd/blob/
 
 # Abstract
 
-For this challenge, we decided to assess the impact of changes in features that were measured across the visits on different pregnancy outcomes. To that extent, we divided the challenge's dataset into several components: a __covariates__ dataset with demographic and socio-economic information, a __deltas__ dataset capturing changes in features across multiple visits, and a __targets__ dataset with outcome variables related to maternal morbidity.
+For this challenge, we decided to assess the impact of changes in features that were measured across the visits on different pregnancy outcomes. To that extent, we divided the challenge's dataset into several components:
+- a __covariates__ dataset with demographic and socio-economic information,
+- a __deltas__ dataset capturing changes in features across multiple visits, and
+- a __targets__ dataset with outcome variables related to maternal morbidity.
 
 For each target variable, we ran 3 classification models: a _Lasso Logistic Regression Model_, a _Light Gradient Boosting Machine_ (LGBM) and a _Random Forest_ (RF). We first assessed which of the three models perfomed the best in terms of F-1 score (the harmonic mean between precision and recall metrics, going beyond the accuracy metric which we found to be unhelpful given the imbalanced distributions of the target variables). After dropping target variables with low support, we were able to identify impactful features for the following morbidities:
 - Chronic Hypertension
