@@ -1,13 +1,13 @@
 # NICHD Submission
 
 Team: 
-- Ainesh Pandey - ainesh93@gmail.com - IBM
+- Ainesh Pandey (Lead) - ainesh93@gmail.com - IBM
 - Gabriel Gilling  - gabrielgilling@gmail.com - IBM
 - Demian Gass - demian.gass@gmail.com - IBM
 
 # Running this project
 
-In order to run our challenge submission , you will first need to run the `requirements.txt` file. After cloning the repo to your local drive, simply run `pip install -r requirements.txt` in your shell/terminal. This will adjust the package dependencies to match the ones used in our project. One of the models we used came from the LightGBM library, you may also want to navigate to the package's [documentation](https://lightgbm.readthedocs.io/en/latest/Installation-Guide.html) for additional steps should the requirements file return an error.
+In order to run our challenge submission, you first need to run the `requirements.txt` file. After cloning the repo to your local drive, simply run `pip install -r requirements.txt` in your shell/terminal. This will adjust the package dependencies to match the ones used in our project. One of the models we used came from the LightGBM library, you may also want to navigate to the package's [documentation](https://lightgbm.readthedocs.io/en/latest/Installation-Guide.html) for additional steps should the requirements file return an error.
 
 We have structured our analysis into 3 Jupyter Notebooks. Before running the notebooks, please set the paths to where the `nuMoM2b_Dataset_NICHD Data Challenge.csv` and `nuMoM2b_Codebook_NICHD Data Challenge.xlsx` files are located in the `my_path.py` file located [here](https://github.com/gabgilling/dse-nichd/blob/main/Notebooks/scripts/my_path.py).
 
